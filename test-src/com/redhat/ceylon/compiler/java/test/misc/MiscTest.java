@@ -100,7 +100,35 @@ public class MiscTest extends CompilerTest {
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
     }
-    
+
+    @Ignore("For benchmarks")
+    @Test
+    public void compileSDK() throws InterruptedException{
+        String[] parts = new String[]{"collection", "file", "json", "math", "net", "process"};
+        StringBuilder b = new StringBuilder();
+        List<String> packages = new ArrayList<String>(parts.length);
+        for(String part : parts){
+            if(b.length() > 0)
+                b.append(File.pathSeparatorChar);
+            b.append("../ceylon-sdk/"+part+"/source");
+            packages.add("ceylon."+part);
+        }
+        String sourcePath = b.toString();
+        CeyloncTool compiler;
+        try {
+            compiler = new CeyloncTool();
+        } catch (VerifyError e) {
+            System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
+            throw e;
+        }
+        CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
+        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
+                Arrays.asList("-src", sourcePath, "-out", "build/classes-sdk", "-XDcompilePolicy=simple", "-verbose:benchmark"), 
+                packages, null);
+        Boolean result = task.call();
+        Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
+    }
+
     //
     // Java keyword avoidance
     // Note class names and generic type arguments are not a problem because
