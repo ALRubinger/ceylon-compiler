@@ -103,4 +103,10 @@ public class ReflectionModelLoader extends AbstractModelLoader {
         System.err.println("NOTE: "+message);
     }
 
+    @Override
+    protected File getLanguageDumpFile() {
+        // we're not using a language dump here
+        return null;
+    }
+
 }

@@ -188,7 +188,8 @@ public class RecognizedOptions {
         SOURCEFILE,
         SRC,
         BOOTSTRAPCEYLON,
-        CEYLONALLOWWARNINGS);
+        CEYLONALLOWWARNINGS,
+        CEYLONLANGUAGEDUMP);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
@@ -254,7 +255,8 @@ public class RecognizedOptions {
         XJCOV,
         XD,
         BOOTSTRAPCEYLON,
-        CEYLONALLOWWARNINGS);
+        CEYLONALLOWWARNINGS,
+        CEYLONLANGUAGEDUMP);
 
     public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
@@ -435,6 +437,7 @@ public class RecognizedOptions {
                 return super.process(options, option);
             }
         },
+        new HiddenOption(CEYLONLANGUAGEDUMP, "opt.arg.file"),
         new HiddenOption(FULLVERSION) {
             @Override
             public boolean process(Options options, String option) {
